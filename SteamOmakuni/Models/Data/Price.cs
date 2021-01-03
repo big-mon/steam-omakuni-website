@@ -11,5 +11,13 @@ namespace SteamOmakuni.Models.Data
         public decimal Initial { get; }
         public decimal Final { get; }
         public int DiscountPercent { get; }
+
+        public Price(string currency, decimal initial, decimal final, int discount)
+        {
+            Currency = currency;
+            Initial = initial;
+            Final = final;
+            DiscountPercent = discount;
+        }
     }
 }

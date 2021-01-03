@@ -20,6 +20,7 @@ SELECT
   a.`appid`
   ,a.`name`
   ,a.`type`
+  ,a.`recommendations`
   ,a.`is_free`
   ,r.`comming_soon`
   ,r.`date`
@@ -30,7 +31,7 @@ SELECT
   ,GROUP_CONCAT(DISTINCT pr.`currency` ORDER BY pr.`currency` DESC) `currencys`
   ,GROUP_CONCAT(DISTINCT pr.`initial` ORDER BY pr.`currency` DESC) `initials`
   ,GROUP_CONCAT(DISTINCT pr.`final` ORDER BY pr.`currency` DESC) `finals`
-  ,GROUP_CONCAT(DISTINCT pr.`discount_percent` ORDER BY pr.`currency` DESC) `discount_percents`
+  ,GROUP_CONCAT(pr.`discount_percent` ORDER BY pr.`currency` DESC) `discount_percents`
   ,GROUP_CONCAT(DISTINCT l.`name`) `languages`
 FROM
   `apps` a
@@ -59,9 +60,9 @@ LIMIT 0, 10
 
         #endregion
 
-        /// <summary></summary>
-        /// <returns></returns>
-        public static DataTable RetrieveApps()
+        /// <summary>トップページ用の最新データを取得</summary>
+        /// <returns>SQL結果テーブル</returns>
+        public static List<Data.App> RetrieveApps()
         {
             // DB接続
             using var conn = new MySqlConnection(GlobalConfigure.DbConnStr);
@@ -82,7 +83,15 @@ LIMIT 0, 10
             };
             _ = adp.Fill(dt);
 
-            return dt;
+            return ConvertDataTableToApps(dt);
+        }
+
+        /// <summary>SQL結果をモデル変換</summary>
+        /// <param name="dt">SQL結果DataTable</param>
+        /// <returns>Appリスト</returns>
+        private static List<Data.App> ConvertDataTableToApps(DataTable dt)
+        {
+            return dt.AsEnumerable().Select(row => new Data.App(row)).ToList();
         }
     }
 }
