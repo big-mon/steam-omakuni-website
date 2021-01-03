@@ -16,6 +16,8 @@ namespace SteamOmakuni
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            // DB接続文字列をグローバル化
             GlobalConfigure.DbConnStr = Configuration.GetValue<string>("ConnectionStrings:MySQLConnection");
         }
 
@@ -56,8 +58,10 @@ namespace SteamOmakuni
         }
     }
 
+    /// <summary>グローバルに参照可能な設定値クラス</summary>
     public class GlobalConfigure
     {
+        /// <summary>DB接続文字列</summary>
         public static string DbConnStr { get; internal set; }
     }
 }
