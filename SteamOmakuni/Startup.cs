@@ -16,6 +16,7 @@ namespace SteamOmakuni
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            GlobalConfigure.DbConnStr = Configuration.GetValue<string>("ConnectionStrings:MySQLConnection");
         }
 
         public IConfiguration Configuration { get; }
@@ -53,5 +54,10 @@ namespace SteamOmakuni
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+    }
+
+    public class GlobalConfigure
+    {
+        public static string DbConnStr { get; internal set; }
     }
 }
