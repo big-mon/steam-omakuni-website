@@ -8,7 +8,7 @@ namespace SteamOmakuni.Models.Data
 {
     public class App
     {
-        #region Props
+        #region DbProps
 
         public string AppID { get; }
         public string Name { get; }
@@ -19,8 +19,46 @@ namespace SteamOmakuni.Models.Data
         public List<string> Publishers { get; }
         public List<string> Languages { get; }
         public List<Genre> Genres { get; }
-        public List<Price> Prices { get; }
+        public Price PriceUSD { get; }
+        public Price PriceJPY { get; }
         public Release Release { get; }
+
+        #endregion
+
+        #region Props
+
+        /// <summary>True: おま国(日本)</summary>
+        public bool IsGeoBlocked => null != PriceUSD && null == PriceJPY;
+
+        /// <summary>通常価格の差(JPY vs USD)</summary>
+        public double InitialPriceGapPercent
+        {
+            get
+            {
+                if (null == PriceUSD || null == PriceJPY) return 0;
+
+                decimal rate = 105;
+                return Math.Round((double)((PriceJPY.Initial / (PriceUSD.Initial * rate) * 100) - 100), 2);
+            }
+        }
+
+        /// <summary>現在価格の差(JPY vs USD)</summary>
+        public double FinalPriceGapPercent
+        {
+            get
+            {
+                if (null == PriceUSD || null == PriceJPY) return 0;
+
+                decimal rate = 105;
+                return Math.Round((double)((PriceJPY.Final / (PriceUSD.Final * rate) * 100) - 100), 2);
+            }
+        }
+
+        /// <summary>True: おま値</summary>
+        public bool IsGeoBlockedInitialPrice => InitialPriceGapPercent > 15;
+
+        /// <summary>True: おま値</summary>
+        public bool IsGeoBlockedFinalPrice => FinalPriceGapPercent > 15;
 
         #endregion
 
@@ -59,7 +97,8 @@ namespace SteamOmakuni.Models.Data
                 {
                     tmpPrices.Add(new Price(cus[i], ins[i], fis[i], dis[i]));
                 }
-                Prices = tmpPrices;
+                PriceUSD = tmpPrices.FirstOrDefault(x => Price.Currencys.USD.ToString() == x.Currency);
+                PriceJPY = tmpPrices.FirstOrDefault(x => Price.Currencys.JPY.ToString() == x.Currency);
             }
             if (null != row["date"]) Release = new Release((bool)row["comming_soon"], row["date"].ToString());
         }
