@@ -6,3 +6,42 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Release Date</th>
+            <th>Price(USD)</th>
+            <th>Price(JPY)</th>
+            <th>Price Gap</th>
+            <th>おま国</th>
+            <th>おま値</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var app in (List<SteamOmakuni.Models.Data.App>)ViewData["Apps"])
+        {
+            <tr>
+                <td><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/@app.AppID/capsule_184x69.jpg" width="150" height="56" loading="lazy" /></td>
+                <td>@app.Name</td>
+                <td>@app.Release.Date</td>
+                <td>
+                    @(null == app.PriceUSD ? "-" : app.PriceUSD.Initial)<br />
+                    @(app.PriceUSD?.Final)
+                </td>
+                <td>
+                    @(null == app.PriceJPY ? "-" : app.PriceJPY.Initial)<br />
+                    @(app.PriceJPY?.Final)
+                </td>
+                <td>
+                    @(null == app.PriceUSD || null == app.PriceJPY ? "" : app.InitialPriceGapPercent)<br />
+                    @(null == app.PriceUSD || null == app.PriceJPY ? "" : app.FinalPriceGapPercent)
+                </td>
+                <td>@app.IsGeoBlocked</td>
+                <td>@app.IsGeoBlockedInitialPrice</td>
+            </tr>
+        }
+    </tbody>
+</table>

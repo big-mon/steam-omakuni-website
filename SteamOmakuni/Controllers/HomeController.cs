@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using SteamOmakuni.Models.Data;
 
 namespace SteamOmakuni.Controllers
 {
@@ -20,6 +21,7 @@ namespace SteamOmakuni.Controllers
 
         public IActionResult Index()
         {
+            ViewData["Apps"] = DAO.RetrieveApps();
             return View();
         }
 
