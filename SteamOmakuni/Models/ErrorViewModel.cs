@@ -1,5 +1,3 @@
-using System;
-
 namespace SteamOmakuni.Models
 {
     public class ErrorViewModel

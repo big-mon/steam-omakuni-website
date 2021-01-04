@@ -1,11 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace SteamOmakuni.Models
 {
@@ -58,7 +55,7 @@ ORDER BY
 LIMIT 0, 10
 ";
 
-        #endregion
+        #endregion SQL
 
         /// <summary>トップページ用の最新データを取得</summary>
         /// <returns>SQL結果テーブル</returns>

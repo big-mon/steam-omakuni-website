@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SteamOmakuni.Models.Data
 {
@@ -23,7 +22,7 @@ namespace SteamOmakuni.Models.Data
         public Price PriceJPY { get; }
         public Release Release { get; }
 
-        #endregion
+        #endregion DbProps
 
         #region Props
 
@@ -60,7 +59,7 @@ namespace SteamOmakuni.Models.Data
         /// <summary>True: おま値</summary>
         public bool IsGeoBlockedFinalPrice => FinalPriceGapPercent > 15;
 
-        #endregion
+        #endregion Props
 
         /// <summary>コンストラクタ</summary>
         /// <param name="row">SQL取得結果行</param>
