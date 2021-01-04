@@ -1,0 +1,19 @@
+﻿/* テーブル */
+
+table {
+    width: 100%;
+}
+
+th {
+    border-bottom: 2px solid #f2f2f2;
+    padding: 1rem 0.6rem;
+    color: #353FBC;
+}
+
+tbody tr {
+    border-bottom: 1px solid #f2f2f2;
+}
+
+tbody td {
+    padding: 0.8rem 0.6rem;
+}
