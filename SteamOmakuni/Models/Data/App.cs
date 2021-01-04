@@ -28,16 +28,16 @@ namespace SteamOmakuni.Models.Data
         /// <param name="row">SQL取得結果行</param>
         public App(DataRow row)
         {
-            if (null != row["appid"]) AppID = row["appid"].ToString();
-            if (null != row["name"]) Name = row["name"].ToString();
-            if (null != row["type"]) Type = row["type"].ToString();
-            if (null != row["recommendations"]) Recommendations = (uint)row["recommendations"];
-            if (null != row["is_free"]) IsFree = (bool)row["is_free"];
-            if (null != row["developers"]) Developers = row["developers"].ToString().Split(",").ToList();
-            if (null != row["publishers"]) Publishers = row["publishers"].ToString().Split(",").ToList();
-            if (null != row["languages"]) Languages = row["languages"].ToString().Split(",").ToList();
+            AppID = row["appid"].ToString();
+            Name = row["name"].ToString();
+            Type = row["type"].ToString();
+            Recommendations = (uint)row["recommendations"];
+            IsFree = (bool)row["is_free"];
+            Developers = row["developers"].ToString().Split(",").ToList();
+            Publishers = row["publishers"].ToString().Split(",").ToList();
+            Languages = row["languages"].ToString().Split(",").ToList();
 
-            if (null != row["genre_id"])
+            if ("" != row["genre_id"].ToString())
             {
                 var tmpGenres = new List<Genre>();
                 var ids = row["genre_id"].ToString().Split(",").ToList();
@@ -48,7 +48,7 @@ namespace SteamOmakuni.Models.Data
                 }
                 Genres = tmpGenres;
             }
-            if (null != row["currency"])
+            if ("" != row["currencys"].ToString())
             {
                 var tmpPrices = new List<Price>();
                 var cus = row["currencys"].ToString().Split(",").ToList();
@@ -61,9 +61,7 @@ namespace SteamOmakuni.Models.Data
                 }
                 Prices = tmpPrices;
             }
-            if (null != row["comming_soon"] && null != row["date"]) Release = new Release((bool)row["comming_soon"], row["date"].ToString());
-
-
+            if (null != row["date"]) Release = new Release((bool)row["comming_soon"], row["date"].ToString());
         }
     }
 }
