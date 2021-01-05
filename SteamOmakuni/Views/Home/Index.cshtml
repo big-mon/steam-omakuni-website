@@ -4,38 +4,41 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p class="lead ">
+        <a href="https://store.steampowered.com/" target="_blank" rel="noreferrer noopener external nofollow">Steam</a>における
+        ストア地域ごとの差異を収集するサードパーティ情報サイトです。
+    </p>
 </div>
 
-<table>
-    <thead>
+<table class="table table-responsive">
+    <thead class="thead-light">
         <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Release Date</th>
-            <th>Price(USD)</th>
-            <th>Price(JPY)</th>
-            <th>Price Gap</th>
-            <th>おま国</th>
-            <th>おま値</th>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Release Date</th>
+            <th scope="col">Price(USD)</th>
+            <th scope="col">Price(JPY)</th>
+            <th scope="col">Price Gap</th>
+            <th scope="col">おま国</th>
+            <th scope="col">おま値</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var app in (List<SteamOmakuni.Models.Data.App>)ViewData["Apps"])
         {
             <tr>
-                <td><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/@app.AppID/capsule_184x69.jpg" width="150" height="56" loading="lazy" /></td>
-                <td>@app.Name</td>
+                <td><img class="img-thumbnail" src="https://cdn.cloudflare.steamstatic.com/steam/apps/@app.AppID/capsule_184x69.jpg" width="150" height="56" loading="lazy" /></td>
+                <td scope="row">@app.Name</td>
                 <td>@app.Release.Date</td>
-                <td>
-                    @(null == app.PriceUSD ? "-" : app.PriceUSD.Initial)<br />
-                    @(app.PriceUSD?.Final)
+                <td class="col__price col__usd">
+                    <span class="col__price__initial">@(null == app.PriceUSD ? "-" : app.PriceUSD.Initial)</span><br />
+                    <span class="col__price__final">@(app.PriceUSD?.Final)</span>
                 </td>
-                <td>
-                    @(null == app.PriceJPY ? "-" : app.PriceJPY.Initial)<br />
-                    @(app.PriceJPY?.Final)
+                <td class="col__price col__jpy">
+                    <span class="col__price__initial">@(null == app.PriceJPY ? "-" : app.PriceJPY.Initial)</span><br />
+                    <span class="col__price__final">@(app.PriceJPY?.Final)</span>
                 </td>
-                <td>
+                <td class="col__price">
                     @(null == app.PriceUSD || null == app.PriceJPY ? "" : app.InitialPriceGapPercent)<br />
                     @(null == app.PriceUSD || null == app.PriceJPY ? "" : app.FinalPriceGapPercent)
                 </td>
