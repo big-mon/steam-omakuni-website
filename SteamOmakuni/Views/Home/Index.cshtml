@@ -2,12 +2,36 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p class="lead ">
-        <a href="https://store.steampowered.com/" target="_blank" rel="noreferrer noopener external nofollow">Steam</a>における
-        ストア地域ごとの差異を収集するサードパーティ情報サイトです。
-    </p>
+<div class="container text-center mb-3">
+    <div class="row mb-3">
+        <div class="col">
+            <h1 class="display-4 mb-3">Welcome</h1>
+            <p class="lead mb-3">
+                <a href="https://store.steampowered.com/" target="_blank" rel="noreferrer noopener external nofollow">Steam</a>における
+                ストア地域ごとの差異を収集するサードパーティ情報サイトです。
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <blockquote class="blockquote text-center">
+                <p class="display-4">@(((List<long>)ViewData["Counts"])[0].ToString("N0"))</p>
+                <footer class="blockquote-footer"><cite title="apps">apps in DB</cite></footer>
+            </blockquote>
+        </div>
+        <div class="col-sm">
+            <blockquote class="blockquote text-center">
+                <p class="display-4">@(((List<long>)ViewData["Counts"])[1].ToString("N0"))</p>
+                <footer class="blockquote-footer"><cite title="developers">developers in DB</cite></footer>
+            </blockquote>
+        </div>
+        <div class="col-sm">
+            <blockquote class="blockquote text-center">
+                <p class="display-4">@(((List<long>)ViewData["Counts"])[2].ToString("N0"))</p>
+                <footer class="blockquote-footer"><cite title="publishers">publishers in DB</cite></footer>
+            </blockquote>
+        </div>
+    </div>
 </div>
 
 <table class="table table-responsive">

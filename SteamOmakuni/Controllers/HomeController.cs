@@ -17,6 +17,7 @@ namespace SteamOmakuni.Controllers
         public IActionResult Index()
         {
             ViewData["Apps"] = DAO.RetrieveApps();
+            ViewData["Counts"] = DAO.RetrieveCounts();
             return View();
         }
 
