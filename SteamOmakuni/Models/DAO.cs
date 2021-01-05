@@ -14,11 +14,11 @@ namespace SteamOmakuni.Models
 
         /// <summary>諸々のカウント集計</summary>
         private const string SQL_SELECT_COUNT_ALL = @"
-SELECT count(*) `count_apps` FROM `apps`
+SELECT count(`appid`) `count_apps` FROM `apps`
 UNION
-SELECT count(*) `count_devs` FROM `developers`
+SELECT count(DISTINCT `name`) `count_devs` FROM `developers`
 UNION
-SELECT count(*) `count_pubs` FROM `publishers`
+SELECT count(DISTINCT `name`) `count_pubs` FROM `publishers`
 ";
 
         /// <summary>最新AppIDを取得</summary>
@@ -62,14 +62,14 @@ GROUP BY
   a.`appid`
 ORDER BY
   a.`appid` DESC
-LIMIT 0, 10
+LIMIT 0, 25
 ";
 
         #endregion SQL
 
         /// <summary>トップページ用の集計データを取得</summary>
         /// <returns>[0]Apps, [1]Devs, [2]Pubs</returns>
-        public static async Task<List<long>> RetrieveCounts()
+        public static List<long> RetrieveCounts()
         {
             // DB接続
             using var conn = new MySqlConnection(GlobalConfigure.DbConnStr);
@@ -88,14 +88,14 @@ LIMIT 0, 10
             {
                 SelectCommand = cmd
             };
-            await adp.FillAsync(dt);
+            adp.Fill(dt);
 
             return dt.AsEnumerable().Select(row => (long)row[0]).ToList();
         }
 
         /// <summary>トップページ用の最新データを取得</summary>
         /// <returns>SQL結果テーブル</returns>
-        public static async Task<List<Data.App>> RetrieveApps()
+        public static List<Data.App> RetrieveApps()
         {
             // DB接続
             using var conn = new MySqlConnection(GlobalConfigure.DbConnStr);
@@ -114,7 +114,7 @@ LIMIT 0, 10
             {
                 SelectCommand = cmd
             };
-            await adp.FillAsync(dt);
+            adp.Fill(dt);
 
             return ConvertDataTableToApps(dt);
         }
