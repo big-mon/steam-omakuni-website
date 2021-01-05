@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SteamOmakuni.Models
 {
@@ -10,6 +11,15 @@ namespace SteamOmakuni.Models
     public static class DAO
     {
         #region SQL
+
+        /// <summary>諸々のカウント集計</summary>
+        private const string SQL_SELECT_COUNT_ALL = @"
+SELECT count(*) `count_apps` FROM `apps`
+UNION
+SELECT count(*) `count_devs` FROM `developers`
+UNION
+SELECT count(*) `count_pubs` FROM `publishers`
+";
 
         /// <summary>最新AppIDを取得</summary>
         private const string SQL_SELECT_NEW_APPS = @"
@@ -57,9 +67,35 @@ LIMIT 0, 10
 
         #endregion SQL
 
+        /// <summary>トップページ用の集計データを取得</summary>
+        /// <returns>[0]Apps, [1]Devs, [2]Pubs</returns>
+        public static async Task<List<long>> RetrieveCounts()
+        {
+            // DB接続
+            using var conn = new MySqlConnection(GlobalConfigure.DbConnStr);
+            conn.Open();
+
+            // SQLの設定
+            using var cmd = new MySqlCommand
+            {
+                Connection = conn,
+                CommandText = SQL_SELECT_COUNT_ALL
+            };
+
+            // SQL実行
+            var dt = new DataTable();
+            using var adp = new MySqlDataAdapter
+            {
+                SelectCommand = cmd
+            };
+            await adp.FillAsync(dt);
+
+            return dt.AsEnumerable().Select(row => (long)row[0]).ToList();
+        }
+
         /// <summary>トップページ用の最新データを取得</summary>
         /// <returns>SQL結果テーブル</returns>
-        public static List<Data.App> RetrieveApps()
+        public static async Task<List<Data.App>> RetrieveApps()
         {
             // DB接続
             using var conn = new MySqlConnection(GlobalConfigure.DbConnStr);
@@ -78,7 +114,7 @@ LIMIT 0, 10
             {
                 SelectCommand = cmd
             };
-            _ = adp.Fill(dt);
+            await adp.FillAsync(dt);
 
             return ConvertDataTableToApps(dt);
         }
