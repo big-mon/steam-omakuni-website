@@ -1,14 +1,9 @@
-﻿/* テーブル */
-.col__price {
-    text-align: right;
+﻿.price_usd span::before {
+    content: "$";
+    padding-right: 0.4rem;
 }
 
-    .col__price.col__usd .col__price__initial::before {
-        content: "$";
-        padding-right: 0.4rem;
-    }
-
-    .col__price.col__jpy .col__price__initial::before {
-        content: "\0a5";
-        padding-right: 0.4rem;
-    }
+.price_jpy span::before {
+    content: "\0a5";
+    padding-right: 0.4rem;
+}

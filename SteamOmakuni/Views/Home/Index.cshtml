@@ -15,19 +15,19 @@
     <div class="row">
         <div class="col-sm">
             <blockquote class="blockquote text-center">
-                <p class="display-4">@ViewBag.Counts[0].ToString("N0")</p>
+                <p class="display-6">@ViewBag.Counts[0].ToString("N0")</p>
                 <footer class="blockquote-footer"><cite title="apps">apps in DB</cite></footer>
             </blockquote>
         </div>
         <div class="col-sm">
             <blockquote class="blockquote text-center">
-                <p class="display-4">@ViewBag.Counts[1].ToString("N0")</p>
+                <p class="display-6">@ViewBag.Counts[1].ToString("N0")</p>
                 <footer class="blockquote-footer"><cite title="developers">developers in DB</cite></footer>
             </blockquote>
         </div>
         <div class="col-sm">
             <blockquote class="blockquote text-center">
-                <p class="display-4">@ViewBag.Counts[2].ToString("N0")</p>
+                <p class="display-6">@ViewBag.Counts[2].ToString("N0")</p>
                 <footer class="blockquote-footer"><cite title="publishers">publishers in DB</cite></footer>
             </blockquote>
         </div>
@@ -42,7 +42,6 @@
             <th scope="col">Release Date</th>
             <th scope="col">Price(USD)</th>
             <th scope="col">Price(JPY)</th>
-            <th scope="col">Price Gap</th>
             <th scope="col">おま国</th>
             <th scope="col">おま値</th>
         </tr>
@@ -54,17 +53,13 @@
                 <td><img class="img-thumbnail" src="https://cdn.cloudflare.steamstatic.com/steam/apps/@app.AppID/capsule_184x69.jpg" width="150" height="56" loading="lazy" /></td>
                 <td scope="row">@app.Name</td>
                 <td>@app.Release.Date</td>
-                <td class="col__price col__usd">
-                    <span class="col__price__initial">@(null == app.PriceUSD ? "-" : app.PriceUSD.Initial)</span><br />
-                    <span class="col__price__final">@(app.PriceUSD?.Final)</span>
+                <td class="text-right price_usd">
+                    <span>@(null == app.PriceUSD ? "-" : app.PriceUSD.Final)</span><br />
+                    <span class="text-muted fs-6"><s>@(null == app.PriceUSD ? "-" : app.PriceUSD.Initial)</s></span>
                 </td>
-                <td class="col__price col__jpy">
-                    <span class="col__price__initial">@(null == app.PriceJPY ? "-" : app.PriceJPY.Initial)</span><br />
-                    <span class="col__price__final">@(app.PriceJPY?.Final)</span>
-                </td>
-                <td class="col__price">
-                    @(null == app.PriceUSD || null == app.PriceJPY ? "" : app.InitialPriceGapPercent)<br />
-                    @(null == app.PriceUSD || null == app.PriceJPY ? "" : app.FinalPriceGapPercent)
+                <td class="text-right price_jpy">
+                    <span>@(null == app.PriceJPY ? "-" : app.PriceJPY.Final)</span><br />
+                    <span class="text-muted fs-6"><s>@(null == app.PriceJPY ? "-" : app.PriceJPY.Initial)</s></span>
                 </td>
                 <td>@app.IsGeoBlocked</td>
                 <td>@app.IsGeoBlockedInitialPrice</td>
