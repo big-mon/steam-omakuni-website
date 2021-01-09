@@ -1,0 +1,75 @@
+﻿@model SteamOmakuni.Models.Data.App;
+
+<div class="container appinfo">
+    <div class="row mb-3">
+        <div class="col-sm-auto mx-auto d-block appinfo__thumbnail">
+            <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/@Model.AppID/library_600x900.jpg" class="img-fluid shadow-lg mx-auto d-block" width="300" height="450" alt="@Model.Name" loading="lazy" />
+        </div>
+        <div class="col-lg appinfo__detail px-5 py-4">
+            <p class="text-uppercase text-muted fs-4 mb-1">game</p>
+            <h1 class="display-6 mb-4">@Model.Name</h1>
+
+            <dl class="row">
+                <dt class="col-sm-3">Release Date</dt>
+                <dd class="col-md-9">@Model.Release?.Date@(null != Model.Release && Model.Release.IsCommingSonn ? " (発売予定)" : "")</dd>
+
+                <dt class="col-sm-3">Developer</dt>
+                <dd class="col-md-9">
+                    @string.Join(",", Model.Developers)
+                </dd>
+
+                <dt class="col-sm-3">Publisher</dt>
+                <dd class="col-md-9">
+                    @string.Join(",", Model.Publishers)
+                </dd>
+
+                <dt class="col-sm-3">Genre</dt>
+                <dd class="col-md-9">
+                    @string.Join(",", Model.Genres.Select(x => x.Name))
+                </dd>
+
+                <dt class="col-sm-3">Languages</dt>
+                <dd class="col-md-9">@string.Join(", ", Model.Languages)</dd>
+
+                <dt class="col-sm-3">Reviews</dt>
+                <dd class="col-md-9">@Model.Recommendations</dd>
+
+                <dt class="col-sm-3">Geo Blocking</dt>
+                <dd class="col-md-9">@Model.IsGeoBlocked</dd>
+
+                <dt class="col-sm-3">おま値</dt>
+                <dd class="col-md-9">@Model.IsGeoBlockedFinalPrice</dd>
+            </dl>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table caption-top text-center">
+            <caption>Prices</caption>
+            <thead>
+                <tr>
+                    <th scope="col">Currency</th>
+                    <th scope="col">Default Price</th>
+                    <th scope="col">Current Price</th>
+                    <th scope="col">Converted Price</th>
+                    <th scope="col">Price Gap</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td scope="row">JPY</td>
+                    <td class="text-right">@string.Format("{0:N0}", Model.PriceJPY?.Initial)</td>
+                    <td class="text-right">@string.Format("{0:N0}", Model.PriceJPY?.Final)</td>
+                    <td class="text-right">@string.Format("{0:N0}", Model.PriceJPY?.Final)</td>
+                    <td class="text-right">0 %</td>
+                </tr>
+                <tr>
+                    <td scope="row">USD</td>
+                    <td class="text-right">@string.Format("{0:N0}", Model.PriceUSD?.Initial)</td>
+                    <td class="text-right">@string.Format("{0:N0}", Model.PriceUSD?.Final)</td>
+                    <td class="text-right">@string.Format("{0:N0}", (Model.PriceUSD?.Final * 105))</td>
+                    <td class="text-right">@Model.FinalPriceGapPercent %</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
