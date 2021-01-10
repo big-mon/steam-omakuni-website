@@ -34,7 +34,7 @@
                 <dt class="col-sm-3">Reviews</dt>
                 <dd class="col-md-9">@Model.Recommendations</dd>
 
-                <dt class="col-sm-3">Geo Blocking</dt>
+                <dt class="col-sm-3">日本未発売</dt>
                 <dd class="col-md-9">@Model.IsGeoBlocked</dd>
 
                 <dt class="col-sm-3">おま値</dt>
@@ -57,16 +57,16 @@
             <tbody>
                 <tr>
                     <td scope="row">JPY</td>
-                    <td class="text-right">@string.Format("{0:N0}", Model.PriceJPY?.Initial)</td>
-                    <td class="text-right">@string.Format("{0:N0}", Model.PriceJPY?.Final)</td>
-                    <td class="text-right">@string.Format("{0:N0}", Model.PriceJPY?.Final)</td>
-                    <td class="text-right">0 %</td>
+                    <td class="text-right price_jpy"><span>@string.Format("{0:N0}", Model.PriceJPY?.Initial)</span></td>
+                    <td class="text-right price_jpy"><span>@string.Format("{0:N0}", Model.PriceJPY?.Final)</span></td>
+                    <td class="text-right price_jpy"><span>@string.Format("{0:N0}", Model.PriceJPY?.Final)</span></td>
+                    <td class="text-right">@(null != Model.PriceJPY ? "0 %" : "")</td>
                 </tr>
                 <tr>
                     <td scope="row">USD</td>
-                    <td class="text-right">@string.Format("{0:N0}", Model.PriceUSD?.Initial)</td>
-                    <td class="text-right">@string.Format("{0:N0}", Model.PriceUSD?.Final)</td>
-                    <td class="text-right">@string.Format("{0:N0}", (Model.PriceUSD?.Final * 105))</td>
+                    <td class="text-right price_usd"><span>@string.Format("{0:N0}", Model.PriceUSD?.Initial)</span></td>
+                    <td class="text-right price_usd"><span>@string.Format("{0:N0}", Model.PriceUSD?.Final)</span></td>
+                    <td class="text-right price_jpy"><span>@string.Format("{0:N0}", (Model.PriceUSD?.Final * 105))</span></td>
                     <td class="text-right">@Model.FinalPriceGapPercent %</td>
                 </tr>
             </tbody>
