@@ -8,9 +8,8 @@ namespace SteamOmakuni.Controllers
     {
         public IActionResult Index()
         {
-            ViewBag.Apps = DAO.RetrieveApps();
             ViewBag.Counts = DAO.RetrieveCounts();
-            return View();
+            return View(DAO.RetrieveApps());
         }
 
         public IActionResult Privacy()
