@@ -50,8 +50,8 @@
         @foreach (SteamOmakuni.Models.Data.App app in ViewBag.Apps)
         {
             <tr>
-                <td><img class="img-thumbnail" src="https://cdn.cloudflare.steamstatic.com/steam/apps/@app.AppID/capsule_184x69.jpg" width="150" height="56" loading="lazy" /></td>
-                <td scope="row">@app.Name</td>
+                <td><a href="/app/@app.AppID"><img class="img-thumbnail" src="https://cdn.cloudflare.steamstatic.com/steam/apps/@app.AppID/capsule_184x69.jpg" width="150" height="56" loading="lazy" /></a></td>
+                <td scope="row"><a href="/app/@app.AppID">@app.Name</a></td>
                 <td>@app.Release.Date</td>
                 <td class="text-right price_usd">
                     <span>@(null == app.PriceUSD ? "-" : app.PriceUSD.Final)</span><br />
