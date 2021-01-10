@@ -1,1 +1,39 @@
 ﻿@model List<SteamOmakuni.Models.Data.App>;
+
+<div class="text-center">
+    <h1 class="display-5 text-center">@ViewBag.title</h1>
+</div>
+
+<table class="table table-responsive">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Release Date</th>
+            <th scope="col">Price(USD)</th>
+            <th scope="col">Price(JPY)</th>
+            <th scope="col">おま国</th>
+            <th scope="col">おま値</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (SteamOmakuni.Models.Data.App app in Model)
+        {
+            <tr>
+                <td><a href="/app/@app.AppID"><img class="img-thumbnail" src="https://cdn.cloudflare.steamstatic.com/steam/apps/@app.AppID/capsule_184x69.jpg" width="150" height="56" loading="lazy" /></a></td>
+                <td scope="row"><a href="/app/@app.AppID">@app.Name</a></td>
+                <td>@app.Release.Date</td>
+                <td class="text-right price_usd">
+                    <span>@(null == app.PriceUSD ? "-" : app.PriceUSD.Final)</span><br />
+                    <span class="text-muted fs-6"><s>@(null == app.PriceUSD ? "-" : app.PriceUSD.Initial)</s></span>
+                </td>
+                <td class="text-right price_jpy">
+                    <span>@(null == app.PriceJPY ? "-" : app.PriceJPY.Final)</span><br />
+                    <span class="text-muted fs-6"><s>@(null == app.PriceJPY ? "-" : app.PriceJPY.Initial)</s></span>
+                </td>
+                <td>@app.IsGeoBlocked</td>
+                <td>@app.IsGeoBlockedInitialPrice</td>
+            </tr>
+        }
+    </tbody>
+</table>
