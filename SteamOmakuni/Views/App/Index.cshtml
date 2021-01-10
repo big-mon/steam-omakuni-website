@@ -6,7 +6,7 @@
             <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/@Model.AppID/library_600x900.jpg" class="img-fluid shadow-lg mx-auto d-block" width="300" height="450" alt="@Model.Name" loading="lazy" />
         </div>
         <div class="col-lg appinfo__detail px-5 py-4">
-            <p class="text-uppercase text-muted fs-4 mb-1">game</p>
+            <p class="text-uppercase text-muted fs-4 mb-1">@Model.Type</p>
             <h1 class="display-6 mb-4">@Model.Name</h1>
 
             <dl class="row">
@@ -25,7 +25,10 @@
 
                 <dt class="col-sm-3">Genre</dt>
                 <dd class="col-md-9">
-                    @string.Join(",", Model.Genres.Select(x => x.Name))
+                    @if (null != Model.Genres)
+                    {
+                        string.Join(",", Model.Genres?.Select(x => x.Name));
+                    }
                 </dd>
 
                 <dt class="col-sm-3">Languages</dt>
