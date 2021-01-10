@@ -15,12 +15,20 @@
 
                 <dt class="col-sm-3">Developer</dt>
                 <dd class="col-md-9">
-                    @string.Join(",", Model.Developers)
+                    @for (int i = 0, j = Model.Developers.Count; i < j; i++)
+                    {
+                        <a href="/developer/@Model.Developers[i]">@Model.Developers[i]</a>
+                        @(i == j - 1 ? "" : ", ")
+                    }
                 </dd>
 
                 <dt class="col-sm-3">Publisher</dt>
                 <dd class="col-md-9">
-                    @string.Join(",", Model.Publishers)
+                    @for (int i = 0, j = Model.Publishers.Count; i < j; i++)
+                    {
+                        <a href="/developer/@Model.Publishers[i]">@Model.Publishers[i]</a>
+                        @(i == j - 1 ? "" : ", ")
+                    }
                 </dd>
 
                 <dt class="col-sm-3">Genre</dt>

@@ -54,6 +54,16 @@ namespace SteamOmakuni
                     name: "app",
                     pattern: "app/{id}",
                     defaults: new { controller = "App", action = "Index" });
+
+                endpoints.MapControllerRoute(
+                    name: "developer",
+                    pattern: "developer/{name}",
+                    defaults: new { controller = "Company", action = "Developer" });
+
+                endpoints.MapControllerRoute(
+                    name: "publisher",
+                    pattern: "publisher/{name}",
+                    defaults: new { controller = "Company", action = "Publisher" });
             });
         }
     }

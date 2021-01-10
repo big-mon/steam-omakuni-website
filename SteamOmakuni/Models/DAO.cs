@@ -105,6 +105,88 @@ GROUP BY
   a.`appid`
 ";
 
+        /// <summary>指定デベロッパーを取得(バインド変数必須)</summary>
+        private const string SQL_SELECT_DEVELOPER = @"
+SELECT
+  a.`appid`
+  ,a.`name`
+  ,a.`type`
+  ,a.`recommendations`
+  ,a.`is_free`
+  ,r.`comming_soon`
+  ,r.`date`
+  ,GROUP_CONCAT(DISTINCT g.`id`) `genre_id`
+  ,GROUP_CONCAT(DISTINCT g.`name`) `genre_name`
+  ,GROUP_CONCAT(DISTINCT d.`name`) `developers`
+  ,GROUP_CONCAT(DISTINCT pu.`name`) `publishers`
+  ,GROUP_CONCAT(DISTINCT pr.`currency` ORDER BY pr.`currency` DESC) `currencys`
+  ,GROUP_CONCAT(DISTINCT pr.`initial` ORDER BY pr.`currency` DESC) `initials`
+  ,GROUP_CONCAT(DISTINCT pr.`final` ORDER BY pr.`currency` DESC) `finals`
+  ,GROUP_CONCAT(pr.`discount_percent` ORDER BY pr.`currency` DESC) `discount_percents`
+  ,GROUP_CONCAT(DISTINCT l.`name`) `languages`
+FROM
+  `apps` a
+  RIGHT JOIN `releases` r
+    ON a.`appid` = r.`appid`
+  LEFT JOIN `genres` g
+    ON a.`appid` = g.`appid`
+  LEFT JOIN `developers` d
+    ON a.`appid` = d.`appid`
+  LEFT JOIN `publishers` pu
+    ON a.`appid` = pu.`appid`
+  LEFT JOIN `prices` pr
+    ON a.`appid` = pr.`appid`
+      AND pr.`currency` IS NOT NULL
+  LEFT JOIN `languages` l
+    ON a.`appid` = l.`appid`
+      AND l.`appid` IS NOT NULL
+WHERE
+  d.`name` = @company
+GROUP BY
+  a.`appid`
+";
+
+        /// <summary>指定パブリッシャーを取得(バインド変数必須)</summary>
+        private const string SQL_SELECT_PUBLISHER = @"
+SELECT
+  a.`appid`
+  ,a.`name`
+  ,a.`type`
+  ,a.`recommendations`
+  ,a.`is_free`
+  ,r.`comming_soon`
+  ,r.`date`
+  ,GROUP_CONCAT(DISTINCT g.`id`) `genre_id`
+  ,GROUP_CONCAT(DISTINCT g.`name`) `genre_name`
+  ,GROUP_CONCAT(DISTINCT d.`name`) `developers`
+  ,GROUP_CONCAT(DISTINCT pu.`name`) `publishers`
+  ,GROUP_CONCAT(DISTINCT pr.`currency` ORDER BY pr.`currency` DESC) `currencys`
+  ,GROUP_CONCAT(DISTINCT pr.`initial` ORDER BY pr.`currency` DESC) `initials`
+  ,GROUP_CONCAT(DISTINCT pr.`final` ORDER BY pr.`currency` DESC) `finals`
+  ,GROUP_CONCAT(pr.`discount_percent` ORDER BY pr.`currency` DESC) `discount_percents`
+  ,GROUP_CONCAT(DISTINCT l.`name`) `languages`
+FROM
+  `apps` a
+  RIGHT JOIN `releases` r
+    ON a.`appid` = r.`appid`
+  LEFT JOIN `genres` g
+    ON a.`appid` = g.`appid`
+  LEFT JOIN `developers` d
+    ON a.`appid` = d.`appid`
+  LEFT JOIN `publishers` pu
+    ON a.`appid` = pu.`appid`
+  LEFT JOIN `prices` pr
+    ON a.`appid` = pr.`appid`
+      AND pr.`currency` IS NOT NULL
+  LEFT JOIN `languages` l
+    ON a.`appid` = l.`appid`
+      AND l.`appid` IS NOT NULL
+WHERE
+  pu.`name` = @company
+GROUP BY
+  a.`appid`
+";
+
         #endregion SQL
 
         /// <summary>トップページ用の集計データを取得</summary>
@@ -159,8 +241,9 @@ GROUP BY
             return ConvertDataTableToApps(dt);
         }
 
-        /// <summary>トップページ用の最新データを取得</summary>
-        /// <returns>SQL結果テーブル</returns>
+        /// <summary>指定AppIDのデータを取得</summary>
+        /// <param name="id">AppID</param>
+        /// <returns>App</returns>
         public static Data.App RetrieveSelectApp(string id)
         {
             // DB接続
@@ -184,6 +267,35 @@ GROUP BY
             adp.Fill(dt);
 
             return ConvertDataTableToApps(dt).FirstOrDefault();
+        }
+
+        /// <summary>指定企業名のデータを取得</summary>
+        /// <param name="isDev">True: Developer / False: Publisher</param>
+        /// <param name="name">検索名称</param>
+        /// <returns>SQL結果テーブル</returns>
+        public static List<Data.App> RetrieveSelectCompany(bool isDev, string name)
+        {
+            // DB接続
+            using var conn = new MySqlConnection(GlobalConfigure.DbConnStr);
+            conn.Open();
+
+            // SQLの設定
+            using var cmd = new MySqlCommand
+            {
+                Connection = conn,
+                CommandText = isDev ? SQL_SELECT_DEVELOPER : SQL_SELECT_PUBLISHER
+            };
+            _ = cmd.Parameters.AddWithValue("company", name);
+
+            // SQL実行
+            var dt = new DataTable();
+            using var adp = new MySqlDataAdapter
+            {
+                SelectCommand = cmd
+            };
+            adp.Fill(dt);
+
+            return ConvertDataTableToApps(dt);
         }
 
         /// <summary>SQL結果をモデル変換</summary>
