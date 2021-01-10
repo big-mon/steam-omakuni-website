@@ -32,17 +32,14 @@
                 <dd class="col-md-9">@string.Join(", ", Model.Languages)</dd>
 
                 <dt class="col-sm-3">Reviews</dt>
-                <dd class="col-md-9">@Model.Recommendations</dd>
+                <dd class="col-md-9">@string.Format("{0:N0}", Model.Recommendations)</dd>
 
-                <dt class="col-sm-3">日本未発売</dt>
+                <dt class="col-sm-3">Geo Blocked</dt>
                 <dd class="col-md-9">@Model.IsGeoBlocked</dd>
-
-                <dt class="col-sm-3">おま値</dt>
-                <dd class="col-md-9">@Model.IsGeoBlockedFinalPrice</dd>
             </dl>
         </div>
     </div>
-    <div class="row">
+    <div class="row mb-3">
         <table class="table caption-top text-center">
             <caption>Prices</caption>
             <thead>
@@ -60,14 +57,68 @@
                     <td class="text-right price_jpy"><span>@string.Format("{0:N0}", Model.PriceJPY?.Initial)</span></td>
                     <td class="text-right price_jpy"><span>@string.Format("{0:N0}", Model.PriceJPY?.Final)</span></td>
                     <td class="text-right price_jpy"><span>@string.Format("{0:N0}", Model.PriceJPY?.Final)</span></td>
-                    <td class="text-right">@(null != Model.PriceJPY ? "0 %" : "")</td>
+                    <td class="text-right percent">
+                        @if (Model.FinalPriceGapPercent > 15)
+                        {
+                            <span class="text-danger">@Model.FinalPriceGapPercent</span>
+                        }
+                        else if (Model.FinalPriceGapPercent > 5)
+                        {
+                            <span class="text-warning">@Model.FinalPriceGapPercent</span>
+                        }
+                        else if (Model.FinalPriceGapPercent > 0)
+                        {
+                            <span class="text-muted">@Model.FinalPriceGapPercent</span>
+                        }
+                        else
+                        {
+                            <span class="text-success">@Model.FinalPriceGapPercent</span>
+                        }
+                    </td>
                 </tr>
                 <tr>
                     <td scope="row">USD</td>
-                    <td class="text-right price_usd"><span>@string.Format("{0:N0}", Model.PriceUSD?.Initial)</span></td>
-                    <td class="text-right price_usd"><span>@string.Format("{0:N0}", Model.PriceUSD?.Final)</span></td>
+                    <td class="text-right price_usd"><span>@string.Format("{0:N2}", Model.PriceUSD?.Initial)</span></td>
+                    <td class="text-right price_usd"><span>@string.Format("{0:N2}", Model.PriceUSD?.Final)</span></td>
                     <td class="text-right price_jpy"><span>@string.Format("{0:N0}", (Model.PriceUSD?.Final * 105))</span></td>
-                    <td class="text-right">@Model.FinalPriceGapPercent %</td>
+                    <td class="text-right percent">-</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row mb-3">
+        <table class="table caption-top text-center">
+            <caption>Links</caption>
+            <thead>
+                <tr>
+                    <th scope="col">Steam</th>
+                    <th scope="col">Steam Database</th>
+                    <th scope="col">Global Steam</th>
+                    <th scope="col">SteamPeek</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <a href="https://store.steampowered.com/app/@Model.AppID/" target="_blank" rel="noreferrer noopener external nofollow">
+                            <img src="https://store.steampowered.com/favicon.ico" loading="lazy" width="32" height="32" />
+                        </a>
+                    </td>
+                    <td>
+                        <a href="https://steamdb.info/app/@Model.AppID/" target="_blank" rel="noreferrer noopener external nofollow">
+                            <img src="https://steamdb.info/static/logos/vector_prefers_schema.svg" loading="lazy" width="32" height="32" />
+                        </a>
+                    </td>
+                    <td>
+                        <a href="https://gamedb.online/games/@Model.AppID/" target="_blank" rel="noreferrer noopener external nofollow">
+                            <img src="https://gamedb.online/assets/img/sa-bg-32x32.png" loading="lazy" width="32" height="32" />
+                        </a>
+                    </td>
+                    <td>
+                        <a href="https://steampeek.hu/?appid=@Model.AppID" target="_blank" rel="noreferrer noopener external nofollow">
+                            <img src="https://steampeek.hu/favicon-32x32-spg.png" loading="lazy" width="32" height="32" />
+                        </a>
+                    </td>
                 </tr>
             </tbody>
         </table>

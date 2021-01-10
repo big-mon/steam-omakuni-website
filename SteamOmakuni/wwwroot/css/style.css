@@ -7,3 +7,8 @@
     content: "\0a5";
     padding-right: 0.4rem;
 }
+
+.percent span::after {
+    content: "%";
+    padding-left: 0.4rem;
+}
