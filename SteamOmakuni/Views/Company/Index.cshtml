@@ -4,6 +4,25 @@
     <h1 class="display-5 text-center">@ViewBag.title</h1>
 </div>
 
+<div class="row text-center">
+    <div class="col">
+        <h2 class="h4">おま国</h2>
+        <p>
+            <span class="display-4">@Model.Where(x => x.IsGeoBlocked).Count()</span>
+            <span class="display-4 text-muted px-2">/</span>
+            <span class="display-6 text-muted">@Model.Count</span>
+        </p>
+    </div>
+    <div class="col">
+        <h2 class="h4">おま値</h2>
+        <p>
+            <span class="display-4">@Model.Where(x => x.IsGeoBlockedFinalPrice).Count()</span>
+            <span class="display-4 text-muted px-2">/</span>
+            <span class="display-6 text-muted">@Model.Count</span>
+        </p>
+    </div>
+</div>
+
 <table class="table table-responsive">
     <thead class="thead-light">
         <tr>
