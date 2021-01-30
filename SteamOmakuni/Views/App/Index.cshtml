@@ -3,7 +3,14 @@
 <div class="container appinfo">
     <div class="row mb-3">
         <div class="col-sm-auto mx-auto d-block appinfo__thumbnail">
-            <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/@Model.AppID/library_600x900.jpg" class="img-fluid shadow-lg mx-auto d-block" width="300" height="450" alt="@Model.Name" loading="lazy" />
+            @if ("DLC" == Model.Type.ToUpper())
+            {
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/@Model.AppID/capsule_467x181.jpg" class="img-fluid shadow-lg mx-auto d-block" width="300" height="116" alt="@Model.Name" loading="lazy" />
+            }
+            else
+            {
+                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/@Model.AppID/library_600x900.jpg" class="img-fluid shadow-lg mx-auto d-block" width="300" height="450" alt="@Model.Name" loading="lazy" />
+            }
         </div>
         <div class="col-lg appinfo__detail px-5 py-4">
             <p class="text-uppercase text-muted fs-4 mb-1">@Model.Type</p>
